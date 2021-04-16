@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
           [&](int newVal) { ui->bombs->display(settings.bombs - newVal); });
   connect(timer, &QTimer::timeout, [&]() { ui->time->display(++time); });
   connect(this, &MainWindow::revealedChanged, [&](int newVal) {
-    qDebug() << newVal;
     if (newVal == ((settings.rows * settings.cols) - settings.bombs)) {
       timer->stop();
     }
@@ -46,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     setFixedSize(420, 480);
     timer->stop();
     time = 0;
+    emit flagChanged(flagCounter = 0);
     ui->time->display(time);
     initBoard(settings.rows, settings.cols, settings.bombs);
   });
@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     settings.cols = 30;
     settings.rows = 16;
     settings.bombs = 99;
+    emit flagChanged(flagCounter = 0);
     setFixedSize(750, 480);
     timer->stop();
     time = 0;
